@@ -35,11 +35,9 @@
     <meta name="keywords" content="metabolomics, systems biology, personalized medicine, exposome" />
     <meta name="author" content="Shuzhao Li" />
 
-    <link href="static/bootstrap.min.css" rel="stylesheet" type="text/css" />
-
-    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <style type="text/css">
-        body { padding-top: 70px; }
+        body { padding-top: 5px; }
 
         div.networkvisual { 
                 min-height: 300px; min-width: 300px;
@@ -56,18 +54,37 @@
 
 <body>
 
-<nav class="navbar navbar-inverse navbar-fixed-top">
-        <ul class="nav navbar-nav">
-                <li class="active"> <a>HiCoNet</a></li>
-                <li><a href="">Download result</a></li>
-                <li><a href="" target="_blank">Help</a></li>
-        </ul>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                                <a class="nav-link" href="#">HiCoNet Expolore <span class="sr-only">(current)</span></a>
+                    </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Upload model (not available)<span class="sr-only">(current)</span></a>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Load an example
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                      <a class="dropdown-item" href="#">Exposome X Metabolome</a>
+                      <a class="dropdown-item" href="#">Herpes Zoster vaccine</a>
+                      <a class="dropdown-item" href="#">Colombia Malaria</a>
+                      <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                  </li>
+                </ul>
+              </div>
 </nav>
 
+
 <div class="container">
-        <!-- Masthead ================================================== -->
         <div><h1>
-            Tentatvie title: project 53
+            Exposome X Metabolome (California CHDS cohort)
         </h1></div>
 <div class="container-fluid">
     <div class="row">
@@ -79,7 +96,7 @@
                     <div id="networkvisual" class="networkvisual" > 
 
                     </div>
-
+                        
             </div>
             </div>
 
@@ -105,53 +122,41 @@
                     </div>
             </div>
         </div>
+
+    </div>
+    <div class="row">
+        <p>This dataset supports Li et al, Understanding mixed environmental exposures using metabolomics via a hierarchical community network model in a cohort of California women in 1960’s. Under review.</p>
     </div>
 
-
-
 </div>
+
+<hr>
 
 <div class="panel-footer">
-    This project was in part supported by NIH grant UH2AI132345.
-    Development extended from Li et al. (2017) Cell, 169: 862, Gardinassi et al (2018) Redox Biology. 17:158-170.     
-</div>
+    <p>This project was in part supported by NIH grant UH2AI132345.</p>
+<!--   <p>Development extended from Li et al. (2017) Cell, 169: 862, Gardinassi et al (2018) Redox Biology. 17:158-170.</p>-->
+ </div>
     
 </div>
 
 
-
-
 <script type="text/javascript" charset="utf-8">
-
-var dataset;
 
 window.cy_elements = "global";
 window.list_communities = "global";
 window.community_data = "global";
 window.selectedCommunity = "global";
 
+var inputData = {{ result_data|safe }};
 
-d3.json("static/result.json", function(error, data) {
+window.cy_elements = inputData["elements"];
+window.community_data = inputData["community_data"];
+window.list_communities = inputData["list_communities"];
 
-    if (error) {
-        console.log(error);
-    } else {
-        dataset = data;
-        window.cy_elements = data["elements"];
-        window.community_data = data["community_data"];
-        window.list_communities = data["list_communities"];
-        var sel = data["list_communities"][0];
-        var selectedCommunity = data["community_data"][sel];
+var sel = list_communities[0];
+var selectedCommunity = community_data[sel];
 
-        // have to have data in first:
-        addSideTable();
 
-        addCyNetwork(window.cy_elements);
-
-        plotMemberChart(selectedCommunity, sel);
-    }
-    }
-);
 
 var addCyNetwork = function(cy_elements){
 
@@ -323,6 +328,13 @@ var plotMemberChart = function(dataSeries, title){
 
 };
 
+
+// have to have data in first, then functions
+addSideTable();
+
+addCyNetwork(window.cy_elements);
+
+plotMemberChart(selectedCommunity, sel);
 
 
 </script>
