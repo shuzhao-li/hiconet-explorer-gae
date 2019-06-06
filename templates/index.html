@@ -8,7 +8,7 @@
 <!--[if IE 9]><html class="ie9 ie-lte9 no-js" lang="en-us"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js" lang="en-us"> <!--<![endif]-->
 <head>
-    <title>Result</title>
+    <title>HiCoNet-explorer</title>
     <!--[if !HTML5]>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <![endif]-->
@@ -35,7 +35,7 @@
     <meta name="keywords" content="metabolomics, systems biology, personalized medicine, exposome" />
     <meta name="author" content="Shuzhao Li" />
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="static/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <style type="text/css">
         body { padding-top: 5px; }
 
@@ -46,9 +46,9 @@
 
     </style>
 
-    <script src="http://d3js.org/d3.v4.min.js" charset="utf-8"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" charset="utf-8"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.5.4/cytoscape.min.js" charset="utf-8"></script>
+<script src="static/d3.v4.min.js" charset="utf-8"></script>
+<script src="static/jquery-3.4.1.min.js" charset="utf-8"></script>
+<script src="static/cytoscape.min.js" charset="utf-8"></script>
 
 </head>
 
@@ -153,8 +153,8 @@ window.cy_elements = inputData["elements"];
 window.community_data = inputData["community_data"];
 window.list_communities = inputData["list_communities"];
 
-var sel = list_communities[0];
-var selectedCommunity = community_data[sel];
+var sel = window.list_communities[0];
+var selectedCommunity = window.community_data[sel];
 
 
 
