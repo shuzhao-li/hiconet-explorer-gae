@@ -1,16 +1,14 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 # request will be used for input forms
-
 import json
-
+from model import *
 from google.cloud import firestore
 # Case 1 was added via Firestore console manually.
 
 # to implement inputcheck, i.e. valiate user uploaded data
 # from inputcheck import inputcheck
-
 app = Flask(__name__)
-
+db = SqliteDatabase('test.db')
 
 
 @app.route('/')
@@ -46,7 +44,55 @@ def malaria():
     '''
     return render_template('malaria.html', )
 
-     
+@app.route('/data')
+def data():
+    with open('result.json') as data:
+        response = app.response_class(
+            response=data.readline(),
+            status=200,
+            mimetype='application/json'
+        )
+        return response
+    return "data"
+
+@app.route('/elements')
+def elements():
+    data = [item.cy_serialize for item in NetworkElement.select()]
+    res = app.response_class(
+        response=json.dumps(data),
+        status=200,
+        mimetype='application/json'
+    )
+    return res
+
+@app.route('/communities')
+def communities():
+    data = [item.name for item in Community.select()]
+    res = app.response_class(
+        response=json.dumps(data),
+        status=200,
+        mimetype='application/json'
+    )
+    return res
+
+@app.route('/community_data/<community_name>')
+def community_data(community_name):
+    c = Community.get(Community.name == community_name)
+    members = CommunityMember.select().where(CommunityMember.community == c)
+    data = MemberData.select().where(MemberData.member.in_(members))
+    res = app.response_class(
+        response=json.dumps([item.serialize for item in data]),
+        status=200,
+        mimetype='application/json'
+    )
+    return res
+    # return json.dumps(data[0].serialize)
+
+
+@app.route('/test')
+def test():
+    return render_template('test.html')
+
 
 #@app.route('/show/<case_id>')
 
