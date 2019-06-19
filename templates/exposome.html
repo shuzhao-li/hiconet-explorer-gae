@@ -180,7 +180,6 @@
 
         axios.get("communities").then(function(res) {
             app.communities = res.data;
-
             // plot first one
             community_name = res.data[0]
             axios.get("community_data/" + community_name).then(function(res) {
