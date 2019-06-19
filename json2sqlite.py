@@ -9,7 +9,7 @@ CommunityMember.drop_table()
 MemberData.drop_table()
 DB.create_tables([NetworkElement, Community, CommunityMember, MemberData])
 
-with open('result.json') as IN:
+with open('result2.json') as IN:
     data = IN.readline()
 data = json.loads(data)
 
@@ -31,7 +31,15 @@ for c in data['list_communities']:
 
 for c, members in data['community_members'].items():
     for m in members:
-        M = CommunityMember(name=m, community=Community.get(Community.name == c))
+        M = CommunityMember(name=m)
+        cm = Community.select().where(Community.name == c)
+        # check if community exists
+        if cm.count() == 0:
+            C = Community(name=c)
+            C.save()
+            M.community = C
+        else:
+            M.community = Community.get(Community.name == c)
         M.save()
 
 for c, member_data in data['community_data'].items():
